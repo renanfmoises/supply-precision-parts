@@ -4,4 +4,4 @@
 
 # Supply Quality Management
 
-A simple statistical investigation on quality of preicison pieces supplies to a company.
+A simple statistical investigation on the quality of precision pieces supplies to a company.
