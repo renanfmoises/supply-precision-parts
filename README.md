@@ -1,5 +1,5 @@
 <picture>
-<img src="/images/supply-quality-management.png" width="1000">
+<img src="supplier-quality-management.png" width="1000">
 </picture>
 
 # Supply Quality Management
