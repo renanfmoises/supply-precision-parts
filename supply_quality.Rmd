@@ -1,0 +1,91 @@
+---
+title: "Ejércicio Integrador | Probabilidad"
+subtitle: "UBA - Curso Nivelador - Maestría en Estadística Matemática"
+author: "Renan Moises"
+date: "3/14/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+**Una planta de ensamblaje recibe una partida de 25 piezas de precisión que incluye exactamente** $k$ **defectuosas. La división de control de calidad elige 5 piezas al azar para controlarlas y rechaza la partida si encuentra al menos 1 defectuosa.**
+
+1.  **Si** $k = 3$**, ¿cuál es la probabilidad de que la partida pase la inspección?**
+
+```{r}
+proba_pasar_la_inspeccion = dhyper(0, 3, 25-3, 5)
+proba_pasar_la_inspeccion
+```
+
+2.  **¿Cómo se comporta la probabilidad de que la partida pase la inspección?**
+
+```{r}
+probas=c()
+for (k in 0:25) {
+    probas[k + 1] = dhyper(0, k, (25 - k), 5)
+}
+ks = 0:25
+plot(ks, probas)
+```
+
+| *Conforme k aumenta, la probabilidad de que partida pase la inspección disminui.*
+
+3.  **¿Cuál es la máxima probabilidad de acceptar una partida que contenga más de 5 piezas defectuosas?**
+
+```{r}
+# La máxima probabiliddad, con k = 6, és:
+
+dhyper(0, 6, 25 - 6, 5)
+```
+
+4.  **Supongamos que en un mes se reciben 10 partidas de 25 piezas con 3 piezas defectuosas cada una, de forma independiente.**
+
+-   **Hallar la función de probabilidad puntual, esperanza y varianzade la cantidad de [partidas rechazadas]{.ul} en un mes.**
+
+| *La compañia recebe 10 muestras de 25 piezas por mes. La evaluación de las muestras sigue el mismo critério, y las muestras son **independientes***. *Así, la probabilidad de exito/fracaso es constante y la distribuición que mide la cantidad de exitos con probabilidad constante dentro de una muestra finita es la **Binomial***. 
+
+```{r}
+ks = 0:10
+probas_rech = c()
+for (k in 0:10) {
+    probas_rech[k + 1] = dbinom(k, 10, 1 - 0.49565) # 0.50435, proba partidas rechazadas
+}
+
+probas_rech
+```
+
+-   **Esperanza de X**
+
+```{r}
+esperanza_x = sum(ks * probas_rech)
+esperanza_x
+```
+
+-   **Varianza de X**
+
+```{r}
+varianza_x = sum(ks^2 * probas_rech) - (sum(ks * probas_rech))^2
+varianza_x
+```
+
+-   **Graficando con R**
+
+```{r}
+plot(ks, probas_rech, type = 'b', lwd = 2)
+```
+
+-   **Distribuición conocida:**
+
+| $Normal$.
+
+-   **A partir del criterio adoptado por la división de control de calidad y lo que observa en estos resultados, ¿es prudente seguir comprando a este provedor?**
+
+| *Asumindo que la comañia este dispuesta a rechazar hasta **3** partidas por mes*
+| 
+| $P(X \leq 3) = 1 - P\large(\small(P(X = 4) + (P(X = 5) + \ldots + P(X = 10)\large)$
+| 
+| $P(X \leq 3) \approx 0,1648$
+
+| *La probabilidad de rechazar 3 partidas o menos es demasiado baja,* $16,48 \%$*. De esa manera, **la compañia deberia buscar a un nuevo proveedor.***
